@@ -110,10 +110,10 @@ public class Renderer implements Runnable {
 			cursorY = exitY;
 		}
 
-		g.drawImage(imageList.get(ImageName.MENU_GAMESTART), startX, startY, DrawBoard);
-		g.drawImage(imageList.get(ImageName.MENU_SETTING), settingX, settingY, DrawBoard);
-		g.drawImage(imageList.get(ImageName.MENU_GAMEEXIT), exitX, exitY, DrawBoard);
-		g.drawImage(imageList.get(ImageName.MENU_CURSOR), cursorX, cursorY, DrawBoard);
+		drawAtPos(ImageName.MENU_GAMESTART, startX, startY);
+		drawAtPos(ImageName.MENU_SETTING, settingX, settingY);
+		drawAtPos(ImageName.MENU_GAMEEXIT, exitX, exitY);
+		drawAtPos(ImageName.MENU_CURSOR, cursorX, cursorY);
 
 	}
 
