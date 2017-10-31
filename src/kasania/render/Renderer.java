@@ -114,7 +114,7 @@ public class Renderer implements Runnable {
 		drawAtPos(ImageName.MENU_SETTING, settingX, settingY);
 		drawAtPos(ImageName.MENU_GAMEEXIT, exitX, exitY);
 		drawAtPos(ImageName.MENU_CURSOR, cursorX, cursorY);
-
+		
 	}
 
 	private void renderInGameScr() {

@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 
 import kasania.input.KeyManager;
 import kasania.main.GameManager;
+import kasania.resources.Sound;
 import kasania.update.Updater;
 
 public class Player extends Entity{
@@ -13,6 +14,7 @@ public class Player extends Entity{
 	private KeyManager keymgr;
 	private static double XPos;
 	private static double YPos;
+	private Sound sound;
 	
 	public Player(double xPos, double yPos,EntityID ID,double movementSpeed) {
 		super(xPos, yPos, ID);
@@ -22,15 +24,24 @@ public class Player extends Entity{
 		keymgr = GameManager.getKeymgr();
 		
 		mulSprint = 1.5;
-		
+		sound = new Sound("Effect\\PlayerFire.wav", "Effect");
 	}
 	
 
 	public void Update(){
 		UpdatePosition();
-		updateCollision();
+		UpdateCollision();
+		UpdateAttack();
 	}
 	
+	private void UpdateAttack() {
+		if(keymgr.isPressed(KeyEvent.VK_C)){
+			sound.play();
+		}
+		
+	}
+
+
 	private void UpdatePosition(){
 		double xCod = 0;
 		double yCod = 0;
@@ -68,7 +79,7 @@ public class Player extends Entity{
 		setYPos(getPYPos());
 	}
 	
-	private void updateCollision(){
+	private void UpdateCollision(){
 		this.colider.Update();
 		if(this.getColider().isColide(Updater.getTM()[0])){
 //			System.out.println("CD");

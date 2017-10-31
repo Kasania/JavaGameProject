@@ -50,7 +50,7 @@ public class Updater implements Runnable{
 		TM = new TestMob[1000];
 		
 		for(int i = 0; i<TM.length; i++){
-			TM[i] = new TestMob(150*(i%10), 150*(i/10),EntityID.MONSTER);
+			TM[i] = new TestMob(150*(i%10), 150*(i/10), EntityID.MONSTER);
 			TM[i].setImage(ImageName.BOMB);
 			TM[i].setColider(new BoxColider(TM[i]));
 		}
@@ -84,9 +84,13 @@ public class Updater implements Runnable{
 		else if(currentScene == Scene.TITLE) updateTitleScr();
 		else if(currentScene == Scene.INGAME) updateInGameScr();
 		else if(currentScene == Scene.PAUSE) updatePauseScr();
+		
+		
 	}
 	
 	private void updateIntroScr(){
+		
+		
 	}
 	
 	private void updateTitleScr(){
