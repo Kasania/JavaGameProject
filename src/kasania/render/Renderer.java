@@ -155,6 +155,10 @@ public class Renderer implements Runnable {
 	public static void drawAtPos(ImageName name, int x, int y) {
 		g.drawImage(imageList.get(name), x, y, DrawBoard);
 	}
+	
+	public static void drawFrames(ImageName name, int x, int y, int w, int h, int r, int c){
+		
+	}
 
 	private int getCenterXPos(ImageName img) {
 		return (GameManager.getWIDTH() - imageList.get(img).getWidth(DrawBoard)) / 2;

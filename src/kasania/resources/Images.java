@@ -22,6 +22,7 @@ public class Images {
 	private void loadImage(){
 		load(ImageName.PLAYER_F22, "Player\\F22.png");
 		load(ImageName.PLAYER_T50, "Player\\T50PAK.png");
+		load(ImageName.PLAYER_FEMALE, "Player\\FemaleSprite.png");
 		load(ImageName.BOMB, "Effect\\Bomb.png");
 		load(ImageName.MENU_GAMESTART, "Menu\\GameStart.png");
 		load(ImageName.MENU_SETTING, "Menu\\GameSetting.png");

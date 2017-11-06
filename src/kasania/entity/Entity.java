@@ -16,7 +16,7 @@ public abstract class Entity {
 	protected Colider colider;
 	private double movementSpeed;
 	
-	private boolean isVisible;
+	protected boolean isVisible;
 	
 	public Entity(double xPos, double yPos, EntityID ID){
 		this.setXPos(xPos);

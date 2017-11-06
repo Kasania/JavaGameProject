@@ -45,9 +45,9 @@ public class Updater implements Runnable{
 	
 	private void initEntity(){
 		player = new Player(0,0,EntityID.PLAYER,1.5);
-		player.setImage(ImageName.PLAYER_F22);
+		player.setImage(ImageName.PLAYER_FEMALE);
 		player.setColider(new BoxColider(player));
-		TM = new TestMob[1000];
+		TM = new TestMob[100000];
 		
 		for(int i = 0; i<TM.length; i++){
 			TM[i] = new TestMob(150*(i%10), 150*(i/10), EntityID.MONSTER);

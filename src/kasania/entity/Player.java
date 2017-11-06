@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 
 import kasania.input.KeyManager;
 import kasania.main.GameManager;
+import kasania.render.Renderer;
 import kasania.resources.Sound;
 import kasania.update.Updater;
 
@@ -15,6 +16,8 @@ public class Player extends Entity{
 	private static double XPos;
 	private static double YPos;
 	private Sound sound;
+	private int frames = 4;
+	
 	
 	public Player(double xPos, double yPos,EntityID ID,double movementSpeed) {
 		super(xPos, yPos, ID);
@@ -40,7 +43,7 @@ public class Player extends Entity{
 		}
 		
 	}
-
+	
 
 	private void UpdatePosition(){
 		double xCod = 0;
