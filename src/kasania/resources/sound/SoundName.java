@@ -1,4 +1,4 @@
-package kasania.resources;
+package kasania.resources.sound;
 
 public enum SoundName {
 	

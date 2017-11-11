@@ -1,6 +1,9 @@
 package kasania.update;
 
+import java.awt.Font;
 import java.awt.event.KeyEvent;
+
+import javax.swing.text.AttributeSet.FontAttribute;
 
 import kasania.entity.EntityID;
 import kasania.entity.Player;
@@ -9,7 +12,7 @@ import kasania.input.KeyManager;
 import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.physics.BoxColider;
-import kasania.resources.ImageName;
+import kasania.resources.image.ImageName;
 
 public class Updater implements Runnable{
 	
@@ -44,10 +47,10 @@ public class Updater implements Runnable{
 	}
 	
 	private void initEntity(){
-		player = new Player(0,0,EntityID.PLAYER,1.5);
+		player = new Player(0,0,EntityID.PLAYER,0.75);
 		player.setImage(ImageName.PLAYER_FEMALE);
 		player.setColider(new BoxColider(player));
-		TM = new TestMob[100000];
+		TM = new TestMob[1];
 		
 		for(int i = 0; i<TM.length; i++){
 			TM[i] = new TestMob(150*(i%10), 150*(i/10), EntityID.MONSTER);
@@ -151,7 +154,6 @@ public class Updater implements Runnable{
 				break;
 			}
 		}
-		
 	}
 	
 	

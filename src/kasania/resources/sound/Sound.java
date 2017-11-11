@@ -1,4 +1,4 @@
-package kasania.resources;
+package kasania.resources.sound;
 
 import java.io.File;
 import java.io.IOException;

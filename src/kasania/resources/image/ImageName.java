@@ -1,9 +1,9 @@
-package kasania.resources;
+package kasania.resources.image;
 
 public enum ImageName {
 	MENU_GAMESTART,MENU_SETTING,MENU_GAMEEXIT,
 	MENU_CURSOR,MENU_PAUSE,MENU_RESUME,MENU_EXIT,
 	PLAYER_F22,PLAYER_T50,PLAYER_FEMALE,
-	BOMB
-
+	BOMB,
+	TESTBACKGROUND
 }

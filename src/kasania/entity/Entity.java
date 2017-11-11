@@ -2,7 +2,7 @@ package kasania.entity;
 
 import kasania.physics.Colider;
 import kasania.render.Renderer;
-import kasania.resources.ImageName;
+import kasania.resources.image.ImageName;
 
 public abstract class Entity {
 	
@@ -10,13 +10,18 @@ public abstract class Entity {
 	
 	private double XPos;
 	private double YPos;
-	protected double root2 = Math.sqrt(2);
-	protected double PI = Math.PI;
+	protected final double Root2 = Math.sqrt(2);
+	protected final double PI = Math.PI;
 	private ImageName image;
 	protected Colider colider;
 	private double movementSpeed;
 	
 	protected boolean isVisible;
+	
+	protected final int DOWN = 0;
+	protected final int LEFT = 1;
+	protected final int RIGHT = 2;
+	protected final int UP = 3;
 	
 	public Entity(double xPos, double yPos, EntityID ID){
 		this.setXPos(xPos);

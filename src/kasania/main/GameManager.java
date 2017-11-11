@@ -6,8 +6,8 @@ import java.util.HashMap;
 import kasania.input.KeyBoard;
 import kasania.input.KeyManager;
 import kasania.render.Renderer;
-import kasania.resources.ImageName;
-import kasania.resources.Images;
+import kasania.resources.image.ImageName;
+import kasania.resources.image.Images;
 import kasania.update.Updater;
 
 public class GameManager {

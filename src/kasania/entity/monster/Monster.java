@@ -8,6 +8,7 @@ public abstract class Monster extends Entity {
 
 	public Monster(double xPos, double yPos,EntityID ID) {
 		super(xPos, yPos, ID);
+		this.setVisible(false);
 	}
 	
 	public void RandomMove(int range){

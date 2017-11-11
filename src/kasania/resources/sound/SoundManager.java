@@ -1,4 +1,4 @@
-package kasania.sound;
+package kasania.resources.sound;
 
 public class SoundManager {
 	

@@ -1,4 +1,4 @@
-package kasania.resources;
+package kasania.resources.image;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -31,6 +31,7 @@ public class Images {
 		load(ImageName.MENU_PAUSE, "Menu\\Pause.png");
 		load(ImageName.MENU_RESUME, "Menu\\Resume.png");
 		load(ImageName.MENU_EXIT, "Menu\\Exit.png");
+		load(ImageName.TESTBACKGROUND, "Stage\\st1.png");
 	}
 	
 	private void load(ImageName name, String path){

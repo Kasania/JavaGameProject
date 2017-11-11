@@ -12,7 +12,7 @@ import kasania.entity.Player;
 import kasania.entity.monster.TestMob;
 import kasania.main.GameManager;
 import kasania.main.Scene;
-import kasania.resources.ImageName;
+import kasania.resources.image.ImageName;
 import kasania.update.Updater;
 
 public class Renderer implements Runnable {
@@ -37,7 +37,6 @@ public class Renderer implements Runnable {
 	private int cursor;
 
 	public Renderer(int FPS) {
-		
 		frame = GameManager.getFrame();
 		DrawBoard = frame.getContentPane();
 		bs = frame.getBufferStrategy();
@@ -48,7 +47,6 @@ public class Renderer implements Runnable {
 		PTime = RTime;
 		CTime = RTime;
 		imageList = GameManager.getImageList();
-
 	}
 
 	public void run() {
@@ -75,8 +73,11 @@ public class Renderer implements Runnable {
 			renderIntroScr();
 		else if (currentScene == Scene.TITLE)
 			renderTitleScr();
-		else if (currentScene == Scene.INGAME)
+		else if (currentScene == Scene.INGAME){
+			TM = Updater.getTM();
+			player = Updater.getPlayer();
 			renderInGameScr();
+		}
 		else if (currentScene == Scene.PAUSE)
 			renderPauseScr();
 		else if (currentScene == Scene.DESTROY)
@@ -109,7 +110,6 @@ public class Renderer implements Runnable {
 			cursorX = exitX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = exitY;
 		}
-
 		drawAtPos(ImageName.MENU_GAMESTART, startX, startY);
 		drawAtPos(ImageName.MENU_SETTING, settingX, settingY);
 		drawAtPos(ImageName.MENU_GAMEEXIT, exitX, exitY);
@@ -118,12 +118,10 @@ public class Renderer implements Runnable {
 	}
 
 	private void renderInGameScr() {
-		TM = Updater.getTM();
-		player = Updater.getPlayer();
+		drawAtPos(ImageName.TESTBACKGROUND, 0, 0);
 		player.Render();
 		for (int i = 0; i < TM.length; i++)
 			TM[i].Render();
-
 	}
 
 	private void renderPauseScr() {
@@ -156,8 +154,12 @@ public class Renderer implements Runnable {
 		g.drawImage(imageList.get(name), x, y, DrawBoard);
 	}
 	
-	public static void drawFrames(ImageName name, int x, int y, int w, int h, int r, int c){
-		
+	public static void drawFrames(ImageName name,int orgFrame, int orgDir, int currentFrame, int currentDir, int x, int y){
+		BufferedImage targetImage = imageList.get(name);
+		int xoffset = targetImage.getWidth()/orgFrame;
+		int yoffset = targetImage.getHeight()/orgDir;
+		g.drawImage(targetImage, x, y, x+xoffset, y+yoffset, 
+				xoffset*currentFrame+1, yoffset*currentDir+1, xoffset*(currentFrame+1), yoffset*(currentDir+1), DrawBoard);
 	}
 
 	private int getCenterXPos(ImageName img) {

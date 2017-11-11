@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import kasania.input.KeyManager;
 import kasania.main.GameManager;
 import kasania.render.Renderer;
-import kasania.resources.Sound;
+import kasania.resources.sound.Sound;
 import kasania.update.Updater;
 
 public class Player extends Entity{
@@ -17,7 +17,10 @@ public class Player extends Entity{
 	private static double YPos;
 	private Sound sound;
 	private int frames = 4;
-	
+	private int dir = 4;
+	private int currentFrame = 0;
+	private int currentDir = 0;
+	private int frameCounter = 0;
 	
 	public Player(double xPos, double yPos,EntityID ID,double movementSpeed) {
 		super(xPos, yPos, ID);
@@ -44,21 +47,36 @@ public class Player extends Entity{
 		
 	}
 	
+	public void Render(){
+		Renderer.drawFrames(this.getImage(), frames, dir, currentFrame, currentDir, 
+				(int)Math.round(getPXPos()), (int)Math.round(getPYPos()));
+		
+	}
 
 	private void UpdatePosition(){
 		double xCod = 0;
 		double yCod = 0;
 		boolean isSprint = false;
+		if (currentFrame>=frames) currentFrame = 0;
+		
 		if(keymgr.isPressed(KeyEvent.VK_W)){
+			currentDir = UP;
+			++frameCounter;
 			yCod-= this.getMovementSpeed();
 		}
 		if(keymgr.isPressed(KeyEvent.VK_S)){
+			currentDir = DOWN;
+			++frameCounter;
 			yCod += this.getMovementSpeed();
 		}
 		if(keymgr.isPressed(KeyEvent.VK_A)){
+			currentDir = LEFT;
+			++frameCounter;
 			xCod -= this.getMovementSpeed();
 		}
 		if(keymgr.isPressed(KeyEvent.VK_D)){
+			currentDir = RIGHT;
+			++frameCounter;
 			xCod += this.getMovementSpeed();
 		}
 		if(keymgr.isPressed(KeyEvent.VK_SHIFT)){
@@ -66,13 +84,22 @@ public class Player extends Entity{
 		}
 		
 		if(xCod != 0 && yCod !=0){
-			xCod = xCod / root2;
-			yCod = yCod / root2;
+			xCod = xCod / Root2;
+			yCod = yCod / Root2;
+			--frameCounter;
 		}
 		if(isSprint){
 			xCod *= mulSprint;
 			yCod *= mulSprint;
-			
+			++frameCounter;
+		}
+		
+		if(frameCounter>50) {
+			++currentFrame;
+			frameCounter = 0;
+		}
+		if(xCod == 0 && yCod ==0){
+			currentFrame = 0;
 		}
 		
 		setPXPos(getPXPos() + xCod);
