@@ -18,10 +18,11 @@ public abstract class Entity {
 	
 	protected boolean isVisible;
 	
-	protected final int DOWN = 0;
+	protected final int UP = 0;
 	protected final int LEFT = 1;
-	protected final int RIGHT = 2;
-	protected final int UP = 3;
+	protected final int DOWN = 2;
+	protected final int RIGHT = 3;
+	
 	
 	public Entity(double xPos, double yPos, EntityID ID){
 		this.setXPos(xPos);
@@ -38,7 +39,8 @@ public abstract class Entity {
 	}
 	
 	public void Render(){
-		if(isVisible) Renderer.drawAtPos(getImage(), (int)Math.round(getXPos()), (int)Math.round(getYPos()));
+		if (!isVisible) return;
+		Renderer.drawAtPos(getImage(), (int)Math.round(getXPos()), (int)Math.round(getYPos()));
 	}
 	
 	public EntityID getID() {

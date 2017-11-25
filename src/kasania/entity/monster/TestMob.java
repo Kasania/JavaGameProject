@@ -9,6 +9,7 @@ public class TestMob extends Monster{
 		setXPos(xPos);
 		setYPos(yPos);
 		this.setMovementSpeed(1);
+		this.setVisible(false);
 	}
 	
 

@@ -2,13 +2,12 @@ package kasania.entity.monster;
 
 import kasania.entity.Entity;
 import kasania.entity.EntityID;
-import kasania.entity.Player;
+import kasania.entity.player.Player;
 
 public abstract class Monster extends Entity {
 
 	public Monster(double xPos, double yPos,EntityID ID) {
 		super(xPos, yPos, ID);
-		this.setVisible(false);
 	}
 	
 	public void RandomMove(int range){

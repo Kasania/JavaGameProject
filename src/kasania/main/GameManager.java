@@ -12,7 +12,6 @@ import kasania.update.Updater;
 
 public class GameManager {
 	
-	//http://www.java2s.com/Tutorial/Java/0261__2D-Graphics/Catalog0261__2D-Graphics.htm
 	
 	private Renderer renderer;
 	private Updater updater;
@@ -36,6 +35,7 @@ public class GameManager {
 		init();
 		UpdaterThread.start();
 		rendererThread.start();
+		
 		while(currentScene != Scene.DESTROY){
 			
 		}
@@ -66,7 +66,6 @@ public class GameManager {
 		renderer = new Renderer(FPS);
 		UpdaterThread = new Thread(updater);
 		rendererThread = new Thread(renderer);
-		
 	}
 	
 	

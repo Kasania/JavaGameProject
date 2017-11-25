@@ -1,18 +1,16 @@
 package kasania.update;
 
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 
-import javax.swing.text.AttributeSet.FontAttribute;
-
 import kasania.entity.EntityID;
-import kasania.entity.Player;
 import kasania.entity.monster.TestMob;
+import kasania.entity.player.Player;
 import kasania.input.KeyManager;
 import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.physics.BoxColider;
 import kasania.resources.image.ImageName;
+import kasania.time.TimeLine;
 
 public class Updater implements Runnable{
 	
@@ -24,9 +22,8 @@ public class Updater implements Runnable{
 	private long UTime;
 	private long CTime;
 	private int UPS;
-	private final long SEC = 1000000000; 
 	private long Updates;
-	
+	private static long CurrentUps = 360;
 	private static int cursor;
 	
 	private KeyManager keymgr;
@@ -39,7 +36,7 @@ public class Updater implements Runnable{
 		currentScene = GameManager.getCurrentScene();
 		setCursor(1);
 		
-		UTime = System.nanoTime();
+		UTime = TimeLine.getNanoTime();
 		PTime = UTime;
 		CTime = UTime;
 		setUpdates(0);
@@ -48,7 +45,7 @@ public class Updater implements Runnable{
 	
 	private void initEntity(){
 		player = new Player(0,0,EntityID.PLAYER,0.75);
-		player.setImage(ImageName.PLAYER_FEMALE);
+		player.setImage(ImageName.PLAYER_SPRITE);
 		player.setColider(new BoxColider(player));
 		TM = new TestMob[1];
 		
@@ -63,14 +60,15 @@ public class Updater implements Runnable{
 		currentScene = GameManager.getCurrentScene();
 		
 		while(currentScene != Scene.DESTROY){
-			UTime = System.nanoTime();
-			if(UTime - PTime >= SEC/UPS){
+			UTime = TimeLine.getNanoTime();
+			if(UTime - PTime >= TimeLine.getNanoToSec()/UPS){
 				this.update();
 				setUpdates(getUpdates() + 1);
 				PTime = UTime;
 			}
-			if(UTime - CTime >= SEC){
-				System.out.println("U : " + Updates);
+			if(UTime - CTime >= TimeLine.getNanoToSec()){
+				CurrentUps = Updates;
+				System.out.println("U : " + CurrentUps);
 				Updates = 0;
 				CTime = UTime;
 			}
@@ -218,6 +216,9 @@ public class Updater implements Runnable{
 	public static void setTM(TestMob[] tM) {
 		TM = tM;
 	}
-
+	public static long getCUps(){
+		return CurrentUps;
+		
+	}
 
 }

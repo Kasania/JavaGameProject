@@ -25,7 +25,7 @@ public class MainFrame extends JFrame{
 	}
 	
 	private void create(int WIDTH, int HEIGHT){
-		this.setBounds((tkit.getScreenSize().width-WIDTH)/2, (tkit.getScreenSize().height-HEIGHT)/2, WIDTH, HEIGHT);
+		this.setBounds((tkit.getScreenSize().width-WIDTH)/2, (tkit.getScreenSize().height-(int)(HEIGHT*1.2))/2, WIDTH, HEIGHT);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(MainPanel);

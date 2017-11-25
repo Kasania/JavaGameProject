@@ -57,6 +57,9 @@ public class Sound{
 		clip.stop();
 		clip.flush();
 	}
+	public long getLength(){
+		return clip.getMicrosecondLength();
+	}
 	
 	public void setVolume(float Volume){
 		FC.setValue(Volume);

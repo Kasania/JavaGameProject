@@ -8,11 +8,12 @@ import java.util.HashMap;
 
 import javax.swing.JFrame;
 
-import kasania.entity.Player;
 import kasania.entity.monster.TestMob;
+import kasania.entity.player.Player;
 import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.resources.image.ImageName;
+import kasania.time.TimeLine;
 import kasania.update.Updater;
 
 public class Renderer implements Runnable {
@@ -23,6 +24,7 @@ public class Renderer implements Runnable {
 
 	private Player player;
 	private TestMob TM[];
+	private boolean ingameflag = false;
 
 	private BufferStrategy bs;
 	private static HashMap<ImageName, BufferedImage> imageList;
@@ -31,7 +33,6 @@ public class Renderer implements Runnable {
 	private long RTime;
 	private long CTime;
 	private long renders;
-	private final long SEC = 1000000000;
 	private int FPS;
 	private Scene currentScene;
 	private int cursor;
@@ -43,7 +44,7 @@ public class Renderer implements Runnable {
 		g = (Graphics2D) bs.getDrawGraphics();
 		this.FPS = FPS;
 		currentScene = GameManager.getCurrentScene();
-		RTime = System.nanoTime();
+		RTime = TimeLine.getNanoTime();
 		PTime = RTime;
 		CTime = RTime;
 		imageList = GameManager.getImageList();
@@ -52,15 +53,15 @@ public class Renderer implements Runnable {
 	public void run() {
 		currentScene = GameManager.getCurrentScene();
 		while (currentScene != Scene.DESTROY) {
-			RTime = System.nanoTime();
-			if (RTime - PTime >= SEC / FPS) {
+			RTime = TimeLine.getNanoTime();
+			if (RTime - PTime >= TimeLine.getNanoToSec() / FPS) {
 				this.render();
 				setRenders(getRenders() + 1);
 				PTime = RTime;
 			}
-			if (RTime - CTime >= SEC) {
+			if (RTime - CTime >= TimeLine.getNanoToSec()) {
 				System.out.println("R : " + renders);
-				renders = 0;
+				setRenders(0);
 				CTime = RTime;
 			}
 			currentScene = GameManager.getCurrentScene();
@@ -69,13 +70,17 @@ public class Renderer implements Runnable {
 
 	private void render() {
 		DrawBoard.paint(g);
-		if (currentScene == Scene.INTRO)
+		if (currentScene == Scene.INTRO){
 			renderIntroScr();
+		}
 		else if (currentScene == Scene.TITLE)
 			renderTitleScr();
 		else if (currentScene == Scene.INGAME){
-			TM = Updater.getTM();
-			player = Updater.getPlayer();
+			if (!ingameflag){
+				TM = Updater.getTM();
+				player = Updater.getPlayer();
+				ingameflag = true;
+			}
 			renderInGameScr();
 		}
 		else if (currentScene == Scene.PAUSE)
@@ -87,7 +92,8 @@ public class Renderer implements Runnable {
 	}
 
 	private void renderIntroScr() {
-
+		
+		
 	}
 
 	private void renderTitleScr() {
@@ -118,7 +124,7 @@ public class Renderer implements Runnable {
 	}
 
 	private void renderInGameScr() {
-		drawAtPos(ImageName.TESTBACKGROUND, 0, 0);
+//		drawBackGround(ImageName.TESTBACKGROUND);
 		player.Render();
 		for (int i = 0; i < TM.length; i++)
 			TM[i].Render();
@@ -154,12 +160,15 @@ public class Renderer implements Runnable {
 		g.drawImage(imageList.get(name), x, y, DrawBoard);
 	}
 	
-	public static void drawFrames(ImageName name,int orgFrame, int orgDir, int currentFrame, int currentDir, int x, int y){
+	public static void drawBackGround(ImageName name){
+		g.drawImage(imageList.get(name), 0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), 
+				0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), DrawBoard);
+	}
+	
+	public static void drawFrames(ImageName name,int xSize, int ySize, int currentFrame, int currentDir, int x, int y){
 		BufferedImage targetImage = imageList.get(name);
-		int xoffset = targetImage.getWidth()/orgFrame;
-		int yoffset = targetImage.getHeight()/orgDir;
-		g.drawImage(targetImage, x, y, x+xoffset, y+yoffset, 
-				xoffset*currentFrame+1, yoffset*currentDir+1, xoffset*(currentFrame+1), yoffset*(currentDir+1), DrawBoard);
+		g.drawImage(targetImage, x, y, x+xSize, y+ySize, 
+				xSize*currentFrame+1, ySize*currentDir+1, xSize*(currentFrame+1), ySize*(currentDir+1), DrawBoard);
 	}
 
 	private int getCenterXPos(ImageName img) {
