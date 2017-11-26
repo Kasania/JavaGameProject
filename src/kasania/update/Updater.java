@@ -129,7 +129,7 @@ public class Updater implements Runnable{
 		player.Update();
 		for(int i = 0; i<TM.length; i++){
 			TM[i].Update();
-			TM[i].ChasePlayer();
+			TM[i].ChaseTarget(player);
 		}
 	}
 	

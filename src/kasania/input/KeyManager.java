@@ -76,10 +76,9 @@ public class KeyManager {
 	public boolean isPressedAnykey() {
 		for (int i = 0; i < key.length; i++) {
 			if (keyStatus[i] != NONPRESSED)
-				return false;
+				return true;
 		}
-		return true;
-
+		return false;
 	}
 
 }

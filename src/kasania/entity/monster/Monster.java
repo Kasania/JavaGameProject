@@ -2,7 +2,6 @@ package kasania.entity.monster;
 
 import kasania.entity.Entity;
 import kasania.entity.EntityID;
-import kasania.entity.player.Player;
 
 public abstract class Monster extends Entity {
 
@@ -17,9 +16,9 @@ public abstract class Monster extends Entity {
 		this.setYPos(this.getYPos() + y);
 	}
 	
-	public void ChasePlayer(){
-		double targetX = Player.getPXPos();
-		double targetY = Player.getPYPos();
+	public void ChaseTarget(Entity target){
+		double targetX = target.getXPos();
+		double targetY = target.getYPos();
 		
 		double dir = -(Math.atan2(targetY-this.getYPos(), targetX-this.getXPos())-0.25*PI*2);
 		
