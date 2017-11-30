@@ -42,7 +42,7 @@ public class Player extends Entity{
 	private final int maxDieFrame = 3;
 	
 	
-	private double attackRate = 0.5;
+	private double attackRate = 1;
 	
 	public Player(double xPos, double yPos,EntityID ID,double movementSpeed) {
 		super(xPos, yPos, ID);
@@ -114,7 +114,7 @@ public class Player extends Entity{
 		switch (currentAction) {
 		case PLAYER_SHOOT:
 			currentMaxFrame = maxShootFrame;
-			frameRate = (int) (40*attackRate);
+			frameRate = (int) (36*attackRate);
 			break;
 		case PLAYER_MEDITATION:
 			currentMaxFrame = maxMeditationFrame;
@@ -146,7 +146,6 @@ public class Player extends Entity{
 		}else{
 			if(currentAction != PlayerStatus.PLAYER_MEDITATION){
 				TimeLine.updateTimeValue(TimeElement.PLAYER_IDLE, TimeLine.getNanoTime());
-				System.out.println(1);
 			}
 		}
 		if(TimeLine.getTimeValueDiff(TimeElement.PLAYER_IDLE, TimeLine.getNanoTime())>TimeLine.getNanoToSec()*3){

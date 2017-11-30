@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import kasania.input.KeyBoard;
 import kasania.input.KeyManager;
+import kasania.input.Mouse;
 import kasania.render.Renderer;
 import kasania.resources.image.ImageName;
 import kasania.resources.image.Images;
@@ -20,6 +21,7 @@ public class GameManager {
 	
 	private static KeyBoard keyboard;
 	private static KeyManager keymgr;
+	private static Mouse mouse;
 	private static MainFrame frame;
 	private static Scene currentScene;
 
@@ -111,6 +113,10 @@ public class GameManager {
 
 	public static void setKeymgr(KeyManager keymgr) {
 		GameManager.keymgr = keymgr;
+	}
+
+	public static Mouse getMouse() {
+		return mouse;
 	}
 
 }

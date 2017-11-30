@@ -14,6 +14,7 @@ import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.resources.image.ImageName;
 import kasania.time.TimeLine;
+import kasania.ui.UIManager;
 import kasania.update.Updater;
 
 public class Renderer implements Runnable {
@@ -24,6 +25,7 @@ public class Renderer implements Runnable {
 
 	private Player player;
 	private TestMob TM[];
+	private UIManager uimgr;
 	private boolean ingameflag = false;
 
 	private BufferStrategy bs;
@@ -80,6 +82,7 @@ public class Renderer implements Runnable {
 				TM = Updater.getTM();
 				player = Updater.getPlayer();
 				ingameflag = true;
+				uimgr = Updater.getUimgr();
 			}
 			renderInGameScr();
 		}
@@ -128,6 +131,7 @@ public class Renderer implements Runnable {
 		player.Render();
 		for (int i = 0; i < TM.length; i++)
 			TM[i].Render();
+		uimgr.render();
 	}
 
 	private void renderPauseScr() {

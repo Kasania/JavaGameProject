@@ -11,11 +11,13 @@ import kasania.main.Scene;
 import kasania.physics.BoxColider;
 import kasania.resources.image.ImageName;
 import kasania.time.TimeLine;
+import kasania.ui.UIManager;
 
 public class Updater implements Runnable{
 	
 	private static Player player;
 	private static TestMob TM[];
+	private static UIManager uimgr;
 
 	private Scene currentScene;
 	private long PTime;
@@ -101,6 +103,7 @@ public class Updater implements Runnable{
 		if(keymgr.isFirstPressed(KeyEvent.VK_ENTER)){
 			switch (getCursor()) {
 			case 1:
+				uimgr = new UIManager();
 				initEntity();
 				setCursor(0);
 				GameManager.setCurrentScene(Scene.INGAME);
@@ -115,9 +118,6 @@ public class Updater implements Runnable{
 				break;
 			}
 		}
-		
-		
-		
 	}
 	
 	private void updateInGameScr(){
@@ -131,6 +131,7 @@ public class Updater implements Runnable{
 			TM[i].Update();
 			TM[i].ChaseTarget(player);
 		}
+		uimgr.update();
 	}
 	
 	private void updatePauseScr(){
@@ -218,7 +219,14 @@ public class Updater implements Runnable{
 	}
 	public static long getCUps(){
 		return CurrentUps;
-		
+	}
+
+	public static UIManager getUimgr() {
+		return uimgr;
+	}
+
+	public static void setUimgr(UIManager uimgr) {
+		Updater.uimgr = uimgr;
 	}
 
 }

@@ -20,6 +20,7 @@ public class MainFrame extends JFrame{
 	
 	private void init(){
 		addKeyListener(GameManager.getKeyboard());
+		addMouseListener(GameManager.getMouse());
 		MainPanel = new JPanel();
 		MainPanel.setBackground(Color.WHITE);
 	}

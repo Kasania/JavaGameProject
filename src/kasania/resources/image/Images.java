@@ -30,6 +30,7 @@ public class Images {
 		load(ImageName.MENU_RESUME, "Menu\\Resume.png");
 		load(ImageName.MENU_EXIT, "Menu\\Exit.png");
 		load(ImageName.TESTBACKGROUND, "Stage\\st1.png");
+		load(ImageName.UI_INVENTORY, "UI\\Inventory.png");
 	}
 	
 	private void load(ImageName name, String path){
