@@ -13,7 +13,7 @@ public class Images {
 	
 	private final String imgsrc = ".\\res\\img\\"; 
 	
-	private HashMap<ImageName, BufferedImage> images;
+	private static HashMap<ImageName, BufferedImage> images;
 	{
 		setImages(new HashMap<>());
 		loadImage();
@@ -31,6 +31,7 @@ public class Images {
 		load(ImageName.MENU_EXIT, "Menu\\Exit.png");
 		load(ImageName.TESTBACKGROUND, "Stage\\st1.png");
 		load(ImageName.UI_INVENTORY, "UI\\Inventory.png");
+		load(ImageName.UI_STATUSBAR, "UI\\StatusBar.png");
 	}
 	
 	private void load(ImageName name, String path){
@@ -52,6 +53,20 @@ public class Images {
 	}
 
 	public void setImages(HashMap<ImageName, BufferedImage> images) {
-		this.images = images;
+		Images.images = images;
 	}
+	
+	public static BufferedImage getImage (ImageName image){
+		return images.get(image);
+	}
+	
+	public static int getImageWidth(ImageName image){
+		
+		return images.get(image).getWidth();
+	}
+	
+	public static int getImageHeight(ImageName image){
+		return images.get(image).getHeight();
+	}
+	
 }

@@ -1,10 +1,11 @@
 package kasania.render;
 
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -13,6 +14,7 @@ import kasania.entity.player.Player;
 import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.resources.image.ImageName;
+import kasania.resources.image.Images;
 import kasania.time.TimeLine;
 import kasania.ui.UIManager;
 import kasania.update.Updater;
@@ -29,7 +31,6 @@ public class Renderer implements Runnable {
 	private boolean ingameflag = false;
 
 	private BufferStrategy bs;
-	private static HashMap<ImageName, BufferedImage> imageList;
 
 	private long PTime;
 	private long RTime;
@@ -39,17 +40,19 @@ public class Renderer implements Runnable {
 	private Scene currentScene;
 	private int cursor;
 
+	
 	public Renderer(int FPS) {
 		frame = GameManager.getFrame();
 		DrawBoard = frame.getContentPane();
 		bs = frame.getBufferStrategy();
 		g = (Graphics2D) bs.getDrawGraphics();
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 		this.FPS = FPS;
 		currentScene = GameManager.getCurrentScene();
 		RTime = TimeLine.getNanoTime();
 		PTime = RTime;
 		CTime = RTime;
-		imageList = GameManager.getImageList();
+		g.setFont(new Font("Consolas",Font.BOLD,20));
 	}
 
 	public void run() {
@@ -62,7 +65,7 @@ public class Renderer implements Runnable {
 				PTime = RTime;
 			}
 			if (RTime - CTime >= TimeLine.getNanoToSec()) {
-				System.out.println("R : " + renders);
+				drawText("R : " + renders, 0, 10);
 				setRenders(0);
 				CTime = RTime;
 			}
@@ -110,13 +113,13 @@ public class Renderer implements Runnable {
 		int cursorY;
 		cursor = Updater.getCursor();
 		if (cursor == 1) {
-			cursorX = startX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = startX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = startY;
 		} else if (cursor == 2) {
-			cursorX = settingX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = settingX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = settingY;
 		} else {
-			cursorX = exitX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = exitX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = exitY;
 		}
 		drawAtPos(ImageName.MENU_GAMESTART, startX, startY);
@@ -127,7 +130,7 @@ public class Renderer implements Runnable {
 	}
 
 	private void renderInGameScr() {
-//		drawBackGround(ImageName.TESTBACKGROUND);
+		drawBackGround(ImageName.TESTBACKGROUND);
 		player.Render();
 		for (int i = 0; i < TM.length; i++)
 			TM[i].Render();
@@ -144,10 +147,10 @@ public class Renderer implements Runnable {
 		int cursorY;
 		cursor = Updater.getCursor();
 		if (cursor == 1) {
-			cursorX = startX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = startX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = startY;
 		} else {
-			cursorX = exitX - imageList.get(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = exitX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
 			cursorY = exitY;
 		}
 		drawAtPos(ImageName.MENU_PAUSE, getCenterXPos(ImageName.MENU_PAUSE), 200);
@@ -161,26 +164,31 @@ public class Renderer implements Runnable {
 	}
 
 	public static void drawAtPos(ImageName name, int x, int y) {
-		g.drawImage(imageList.get(name), x, y, DrawBoard);
+		g.drawImage(Images.getImage(name), x, y, DrawBoard);
 	}
 	
 	public static void drawBackGround(ImageName name){
-		g.drawImage(imageList.get(name), 0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), 
+		g.drawImage(Images.getImage(name), 0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), 
 				0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), DrawBoard);
 	}
 	
 	public static void drawFrames(ImageName name,int xSize, int ySize, int currentFrame, int currentDir, int x, int y){
-		BufferedImage targetImage = imageList.get(name);
+		BufferedImage targetImage = Images.getImage(name);
 		g.drawImage(targetImage, x, y, x+xSize, y+ySize, 
 				xSize*currentFrame+1, ySize*currentDir+1, xSize*(currentFrame+1), ySize*(currentDir+1), DrawBoard);
 	}
+	
+	public static void drawText(String text, int x, int y){
+		g.drawString(text, x, y);
+		System.out.println(text);
+	}
 
 	private int getCenterXPos(ImageName img) {
-		return (GameManager.getWIDTH() - imageList.get(img).getWidth(DrawBoard)) / 2;
+		return (GameManager.getWIDTH() - Images.getImage(img).getWidth(DrawBoard)) / 2;
 	}
 
 	private int getCenterYPos(ImageName img) {
-		return (GameManager.getHEIGHT() - imageList.get(img).getHeight(DrawBoard)) / 2;
+		return (GameManager.getHEIGHT() - Images.getImage(img).getHeight(DrawBoard)) / 2;
 	}
 
 	public long getRenders() {

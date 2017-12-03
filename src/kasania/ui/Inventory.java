@@ -5,10 +5,12 @@ import kasania.resources.image.ImageName;
 
 public class Inventory extends UI{
 	
-	@Override
+	{
+		Image = ImageName.UI_INVENTORY;
+	}
+	
 	public void render() {
-		super.render();
-		Renderer.drawAtPos(ImageName.UI_INVENTORY, 0, 0);
+		Renderer.drawAtPos(Image, 0, 100);
 		
 	}
 

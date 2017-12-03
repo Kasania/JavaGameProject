@@ -1,5 +1,5 @@
 package kasania.ui;
 
 public enum UIName {
-	Inventory
+	INVENTORY,STAUTSBAR
 }

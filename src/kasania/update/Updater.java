@@ -9,6 +9,7 @@ import kasania.input.KeyManager;
 import kasania.main.GameManager;
 import kasania.main.Scene;
 import kasania.physics.BoxColider;
+import kasania.render.Renderer;
 import kasania.resources.image.ImageName;
 import kasania.time.TimeLine;
 import kasania.ui.UIManager;
@@ -70,7 +71,7 @@ public class Updater implements Runnable{
 			}
 			if(UTime - CTime >= TimeLine.getNanoToSec()){
 				CurrentUps = Updates;
-				System.out.println("U : " + CurrentUps);
+				Renderer.drawText("U : " + CurrentUps, 0, 40);
 				Updates = 0;
 				CTime = UTime;
 			}
