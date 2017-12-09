@@ -4,7 +4,7 @@ import kasania.input.KeyBoard;
 import kasania.input.KeyManager;
 import kasania.input.Mouse;
 import kasania.render.Renderer;
-import kasania.resources.image.Images;
+import kasania.resources.image.ImageManager;
 import kasania.update.Updater;
 
 public class GameManager {
@@ -20,10 +20,10 @@ public class GameManager {
 	private static MainFrame frame;
 	private static Scene currentScene;
 
-	private Images images;
+	private ImageManager images;
 
-	private static final int WIDTH = 1600;
-	private static final int HEIGHT = 900;
+	private static int WIDTH = 1600;
+	private static int HEIGHT = 900;
 	private int UPS;
 	private int FPS;
 
@@ -47,7 +47,7 @@ public class GameManager {
 	public void load() {
 		currentScene = Scene.TITLE;
 
-		images = new Images();
+		images = new ImageManager();
 
 		keyboard = new KeyBoard();
 		frame = new MainFrame(WIDTH, HEIGHT);
@@ -59,8 +59,8 @@ public class GameManager {
 		UPS = 360;
 		updater = new Updater(UPS);
 		renderer = new Renderer(FPS);
-		UpdaterThread = new Thread(updater);
-		rendererThread = new Thread(renderer);
+		UpdaterThread = new Thread(updater,"Updater");
+		rendererThread = new Thread(renderer,"Renderer");
 	}
 
 	public void dispose() {

@@ -3,7 +3,7 @@ package kasania.ui;
 import kasania.main.GameManager;
 import kasania.render.Renderer;
 import kasania.resources.image.ImageName;
-import kasania.resources.image.Images;
+import kasania.resources.image.ImageManager;
 
 public class StatusBar extends UI{
 
@@ -13,7 +13,7 @@ public class StatusBar extends UI{
 	}
 	
 	public void render() {
-		Renderer.drawAtPos(Image, 0, GameManager.getHEIGHT()-Images.getImageHeight(Image));
+		Renderer.drawAbsPos(Image, 0, GameManager.getHEIGHT()-ImageManager.getImage(Image).getHeight());
 		
 		
 	}

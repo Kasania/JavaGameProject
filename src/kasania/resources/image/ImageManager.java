@@ -3,19 +3,20 @@ package kasania.resources.image;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-public class Images {
+public class ImageManager {
 	
 	private final String imgsrc = ".\\res\\img\\"; 
 	
-	private static HashMap<ImageName, BufferedImage> images;
+	private static HashMap<ImageName, SImage> images;
 	{
-		setImages(new HashMap<>());
+		images = new HashMap<>();
 		loadImage();
 	}
 	
@@ -37,36 +38,26 @@ public class Images {
 	private void load(ImageName name, String path){
 		try {
 			Image image = ImageIO.read(new File(imgsrc + path));
-			BufferedImage bi = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			int[] data = new int[(width)*(height)];
 			Graphics2D g2d = bi.createGraphics();
 			g2d.drawImage(image, 0,0, null);
+			data = ((DataBufferInt)bi.getRaster().getDataBuffer()).getData();
 			g2d.dispose();
-			images.put(name, bi);
+			images.put(name, new SImage(data, width, height));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-
-	public HashMap<ImageName, BufferedImage> getImages() {
+	
+	public static SImage getImage(ImageName name){
+		return images.get(name);
+	}
+	
+	public HashMap<ImageName, SImage> getImages() {
 		return images;
-	}
-
-	public void setImages(HashMap<ImageName, BufferedImage> images) {
-		Images.images = images;
-	}
-	
-	public static BufferedImage getImage (ImageName image){
-		return images.get(image);
-	}
-	
-	public static int getImageWidth(ImageName image){
-		
-		return images.get(image).getWidth();
-	}
-	
-	public static int getImageHeight(ImageName image){
-		return images.get(image).getHeight();
 	}
 	
 }

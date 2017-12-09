@@ -10,7 +10,7 @@ public class Inventory extends UI{
 	}
 	
 	public void render() {
-		Renderer.drawAtPos(Image, 0, 100);
+		Renderer.drawAbsPos(Image, 0, 100);
 		
 	}
 

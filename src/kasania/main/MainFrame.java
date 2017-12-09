@@ -31,7 +31,7 @@ public class MainFrame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(MainPanel);
 		this.setContentPane(MainPanel);
-//		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setUndecorated(true);
 		this.pack();
 		this.setVisible(true);

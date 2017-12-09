@@ -1,11 +1,14 @@
 package kasania.render;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
@@ -13,8 +16,9 @@ import kasania.entity.monster.TestMob;
 import kasania.entity.player.Player;
 import kasania.main.GameManager;
 import kasania.main.Scene;
+import kasania.resources.image.ImageManager;
 import kasania.resources.image.ImageName;
-import kasania.resources.image.Images;
+import kasania.resources.image.SImage;
 import kasania.time.TimeLine;
 import kasania.ui.UIManager;
 import kasania.update.Updater;
@@ -28,10 +32,13 @@ public class Renderer implements Runnable {
 	private Player player;
 	private TestMob TM[];
 	private UIManager uimgr;
-	private boolean ingameflag = false;
+	private boolean isInGame = false;
 
 	private BufferStrategy bs;
-
+	private static BufferedImage backBuffer;
+	private static int[] backBufferRaster;
+	private static int[] drawBuffer;
+	
 	private long PTime;
 	private long RTime;
 	private long CTime;
@@ -40,19 +47,19 @@ public class Renderer implements Runnable {
 	private Scene currentScene;
 	private int cursor;
 
-	
 	public Renderer(int FPS) {
 		frame = GameManager.getFrame();
 		DrawBoard = frame.getContentPane();
 		bs = frame.getBufferStrategy();
-		g = (Graphics2D) bs.getDrawGraphics();
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+		backBuffer = new BufferedImage(GameManager.getWIDTH(), GameManager.getHEIGHT(), BufferedImage.TYPE_INT_ARGB);
+		backBufferRaster = ((DataBufferInt) backBuffer.getRaster().getDataBuffer()).getData();
+		drawBuffer = new int[GameManager.getWIDTH() * GameManager.getHEIGHT()];
+		
 		this.FPS = FPS;
 		currentScene = GameManager.getCurrentScene();
 		RTime = TimeLine.getNanoTime();
 		PTime = RTime;
 		CTime = RTime;
-		g.setFont(new Font("Consolas",Font.BOLD,20));
 	}
 
 	public void run() {
@@ -74,32 +81,37 @@ public class Renderer implements Runnable {
 	}
 
 	private void render() {
-		DrawBoard.paint(g);
-		if (currentScene == Scene.INTRO){
+//		DrawBoard.paint(g);
+		g = (Graphics2D) bs.getDrawGraphics();
+		
+		if (currentScene == Scene.INTRO) {
 			renderIntroScr();
-		}
-		else if (currentScene == Scene.TITLE)
+		} else if (currentScene == Scene.TITLE)
 			renderTitleScr();
-		else if (currentScene == Scene.INGAME){
-			if (!ingameflag){
+		else if (currentScene == Scene.INGAME) {
+			if (!isInGame) {
 				TM = Updater.getTM();
 				player = Updater.getPlayer();
-				ingameflag = true;
+				isInGame = true;
 				uimgr = Updater.getUimgr();
 			}
 			renderInGameScr();
-		}
-		else if (currentScene == Scene.PAUSE)
+		} else if (currentScene == Scene.PAUSE)
 			renderPauseScr();
 		else if (currentScene == Scene.DESTROY)
 			dispose();
-
+		for(int i = 0; i<backBufferRaster.length; i++){
+			backBufferRaster[i] = drawBuffer[i];
+		}
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT());
+		g.drawImage(backBuffer, 0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), DrawBoard);
+		g.dispose();
 		bs.show();
 	}
 
 	private void renderIntroScr() {
-		
-		
+
 	}
 
 	private void renderTitleScr() {
@@ -113,24 +125,24 @@ public class Renderer implements Runnable {
 		int cursorY;
 		cursor = Updater.getCursor();
 		if (cursor == 1) {
-			cursorX = startX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = startX - ImageManager.getImage(ImageName.MENU_CURSOR).getWidth();
 			cursorY = startY;
 		} else if (cursor == 2) {
-			cursorX = settingX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = settingX - ImageManager.getImage(ImageName.MENU_CURSOR).getWidth();
 			cursorY = settingY;
 		} else {
-			cursorX = exitX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = exitX - ImageManager.getImage(ImageName.MENU_CURSOR).getWidth();
 			cursorY = exitY;
 		}
-		drawAtPos(ImageName.MENU_GAMESTART, startX, startY);
-		drawAtPos(ImageName.MENU_SETTING, settingX, settingY);
-		drawAtPos(ImageName.MENU_GAMEEXIT, exitX, exitY);
-		drawAtPos(ImageName.MENU_CURSOR, cursorX, cursorY);
-		
+		drawAbsPos(ImageName.MENU_GAMESTART, startX, startY);
+		drawAbsPos(ImageName.MENU_SETTING, settingX, settingY);
+		drawAbsPos(ImageName.MENU_GAMEEXIT, exitX, exitY);
+		drawAbsPos(ImageName.MENU_CURSOR, cursorX, cursorY);
+
 	}
 
 	private void renderInGameScr() {
-		drawBackGround(ImageName.TESTBACKGROUND);
+//		drawBackGround(ImageName.TESTBACKGROUND);
 		player.Render();
 		for (int i = 0; i < TM.length; i++)
 			TM[i].Render();
@@ -147,48 +159,49 @@ public class Renderer implements Runnable {
 		int cursorY;
 		cursor = Updater.getCursor();
 		if (cursor == 1) {
-			cursorX = startX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = startX - ImageManager.getImage(ImageName.MENU_CURSOR).getWidth();
 			cursorY = startY;
 		} else {
-			cursorX = exitX - Images.getImage(ImageName.MENU_CURSOR).getWidth(DrawBoard);
+			cursorX = exitX - ImageManager.getImage(ImageName.MENU_CURSOR).getWidth();
 			cursorY = exitY;
 		}
-		drawAtPos(ImageName.MENU_PAUSE, getCenterXPos(ImageName.MENU_PAUSE), 200);
-		drawAtPos(ImageName.MENU_RESUME, startX, startY);
-		drawAtPos(ImageName.MENU_EXIT, exitX, exitY);
-		drawAtPos(ImageName.MENU_CURSOR, cursorX, cursorY);
+		drawAbsPos(ImageName.MENU_PAUSE, getCenterXPos(ImageName.MENU_PAUSE), 200);
+		drawAbsPos(ImageName.MENU_RESUME, startX, startY);
+		drawAbsPos(ImageName.MENU_EXIT, exitX, exitY);
+		drawAbsPos(ImageName.MENU_CURSOR, cursorX, cursorY);
 
 	}
 
 	private void dispose() {
 	}
 
-	public static void drawAtPos(ImageName name, int x, int y) {
-		g.drawImage(Images.getImage(name), x, y, DrawBoard);
+	public static void drawAbsPos(ImageName name, int x, int y){
+		SImage image =  ImageManager.getImage(name);
+		for (int sy = 0; sy<image.getHeight();sy++){
+			for (int sx = 0; sx<image.getWidth();sx++){
+				if(sx+x>GameManager.getWIDTH() || sy+y>GameManager.getHEIGHT()) break;
+				drawBuffer[(sx+x)+(sy+y)*GameManager.getWIDTH()] = image.getData()[sx+sy*image.getWidth()];
+			}
+		}
 	}
-	
-	public static void drawBackGround(ImageName name){
-		g.drawImage(Images.getImage(name), 0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), 
-				0, 0, GameManager.getWIDTH(), GameManager.getHEIGHT(), DrawBoard);
-	}
-	
-	public static void drawFrames(ImageName name,int xSize, int ySize, int currentFrame, int currentDir, int x, int y){
-		BufferedImage targetImage = Images.getImage(name);
-		g.drawImage(targetImage, x, y, x+xSize, y+ySize, 
-				xSize*currentFrame+1, ySize*currentDir+1, xSize*(currentFrame+1), ySize*(currentDir+1), DrawBoard);
-	}
-	
-	public static void drawText(String text, int x, int y){
-		g.drawString(text, x, y);
+
+//	public static void drawFrames(ImageName name, int xSize, int ySize, int currentFrame, int currentDir, int x, int y) {
+//		BufferedImage targetImage = ImageManager.getImage(name);
+//		g.drawImage(targetImage, x, y, x + xSize, y + ySize, xSize * currentFrame + 1, ySize * currentDir + 1,
+//				xSize * (currentFrame + 1), ySize * (currentDir + 1), DrawBoard);
+//	}
+
+	public static void drawText(String text, int x, int y) {
+//		g.drawString(text, x, y);
 		System.out.println(text);
 	}
 
 	private int getCenterXPos(ImageName img) {
-		return (GameManager.getWIDTH() - Images.getImage(img).getWidth(DrawBoard)) / 2;
+		return (GameManager.getWIDTH() - ImageManager.getImage(img).getWidth()) / 2;
 	}
 
 	private int getCenterYPos(ImageName img) {
-		return (GameManager.getHEIGHT() - Images.getImage(img).getHeight(DrawBoard)) / 2;
+		return (GameManager.getHEIGHT() - ImageManager.getImage(img).getHeight()) / 2;
 	}
 
 	public long getRenders() {

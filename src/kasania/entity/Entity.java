@@ -34,7 +34,7 @@ public abstract class Entity {
 	
 	public void Render(){
 		if (!isVisible) return;
-		Renderer.drawAtPos(getImage(), (int)Math.round(getXPos()), (int)Math.round(getYPos()));
+		Renderer.drawAbsPos(getImage(), (int)Math.round(getXPos()), (int)Math.round(getYPos()));
 	}
 	
 	public EntityID getID() {

@@ -83,8 +83,9 @@ public class Player extends Entity{
 	}
 	
 	public void Render(){
-		Renderer.drawFrames(this.getImage(), spriteXSize, spriteYSize, currentFrame, currentAction.ordinal()*4+currentDir.ordinal(), 
-				(int)Math.round(getPXPos()), (int)Math.round(getPYPos()));
+		super.Render();
+//		Renderer.drawFrames(this.getImage(), spriteXSize, spriteYSize, currentFrame, currentAction.ordinal()*4+currentDir.ordinal(), 
+//				(int)Math.round(getPXPos()), (int)Math.round(getPYPos()));
 	}
 	
 	private void UpdateFrames(){
